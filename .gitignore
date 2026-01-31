@@ -1,0 +1,12 @@
+.env
+minio_data/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.vscode/
+.idea/
+*.log
+world-1.0.tar.gz
