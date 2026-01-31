@@ -204,45 +204,18 @@ export PYTHONPATH=$PYTHONPATH:$(pwd)
    curl http://localhost:8000/cities/BGR
    ```
 
-## Преимущества архитектуры
 
-- ✅ **Автоматическая инвалидация кеша** при прямых изменениях в БД
-- ✅ **Минимальная нагрузка** (LISTEN/NOTIFY встроен в PostgreSQL)
-- ✅ **Kafka гарантирует доставку** сообщений
-- ✅ **Расширяемая архитектура** (можно добавить потребителей)
-- ✅ **Connection pooling** для оптимизации подключений к БД
-- ✅ **Единый конфиг** через .env файл
 
-## Конфигурация
+- **Автоматическая инвалидация кеша** при прямых изменениях в БД
+-  **Минимальная нагрузка** (LISTEN/NOTIFY встроен в PostgreSQL)
+-  **Kafka гарантирует доставку** сообщений
+-  **Расширяемая архитектура** (можно добавить потребителей)
+- **Connection pooling** для оптимизации подключений к БД
+- **Единый конфиг** через .env файл
 
-Все настройки хранятся в `.env` файле:
 
-```env
-# S3 Storage
-MINIO_ACCESS_KEY=admin
-MINIO_SECRET_KEY=password123
-MINIO_ENDPOINT=http://localhost:9000
-MINIO_BUCKET=test
 
-# PostgreSQL
-DB_USER=postgres
-DB_PASSWORD=root
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=tutorial
-DB_POOL_SIZE=10
-DB_MAX_OVERFLOW=20
-DB_POOL_RECYCLE=3600
 
-# Redis
-REDIS_HOST=localhost
-REDIS_PORT=6379
-
-# Kafka
-KAFKA_BOOTSTRAP_SERVERS=localhost:9092
-```
-
-## Примечания
 
 - `.env` файлы добавлены в `.gitignore` для безопасности
 - Для локального тестирования используется MinIO как S3-совместимое хранилище
