@@ -66,12 +66,44 @@ services:
     volumes:
       - pg_data_internal:/var/lib/postgresql
       - ./world-1.0.tar.gz:/world-1.0.tar.gz
+      - ./app/database/trigger.sql:/docker-entrypoint-initdb.d/trigger.sql
     networks:
       - tutorial_network
     deploy:
       resources:
         limits:
           memory: 256M
+
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: app-server
+    ports:
+      - "8000:8000"
+    environment:
+      - MINIO_ENDPOINT=${MINIO_ENDPOINT}
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+      - MINIO_BUCKET=${MINIO_BUCKET}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=postgres-tutorial
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME}
+      - DB_POOL_SIZE=${DB_POOL_SIZE}
+      - DB_MAX_OVERFLOW=${DB_MAX_OVERFLOW}
+      - DB_POOL_RECYCLE=${DB_POOL_RECYCLE}
+      - REDIS_HOST=redis-for-cache
+      - REDIS_PORT=6379
+      - KAFKA_BOOTSTRAP_SERVERS=kafka-test:9092
+    depends_on:
+      - postgres
+      - kafka
+      - redis
+    networks:
+      - tutorial_network
+    restart: unless-stopped
 
 volumes:
   pg_data_internal:

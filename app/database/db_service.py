@@ -33,7 +33,7 @@ async def listen_to_pg_notify():
     Слушает уведомления PostgreSQL и отправляет в Kafka
     """
     import psycopg
-    from kafka.kafka_service import send_update_event
+    from kafka.kafka_service import kafka_service
     
     conn = await psycopg.AsyncConnection.connect(settings.DATABASE_URL)
     await conn.execute("LISTEN city_updates")
@@ -41,7 +41,7 @@ async def listen_to_pg_notify():
     async with conn.notifies():
         async for notify in conn.notifies():
             city_code = notify.payload
-            await send_update_event(city_code)
+            await kafka_service.send_invalidation_event(city_code)
             print(f" Получено уведомление из PG: {city_code}")
 
 if __name__ == "__main__":
